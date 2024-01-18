@@ -1,4 +1,4 @@
-# Electric ChargingTracker
+# ChargingTracker
 
 Welcome to the GitHub page of the ChargingTracker! This web application provides a convenient way to track the energy consumption and associated costs of charging your electric car.
 
