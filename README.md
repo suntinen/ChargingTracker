@@ -11,4 +11,4 @@ Welcome to the GitHub page of the ChargingTracker! This web application provides
 1. Clone this project to your local machine:
 
 ```bash
-git clone https://github.com/username/electric-car-charging-monitor.git
+git clone https://github.com/suntinen/ChargingTracker.git
