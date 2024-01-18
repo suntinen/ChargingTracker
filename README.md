@@ -4,7 +4,7 @@ Welcome to the GitHub page of the ChargingTracker! This web application provides
 
 ## Features
 
-- **View Charging History:** You can review your electric car's previous charging sessions, including dates, energy consumption, and costs.
+- **Maintain and review Charging History:** You can maintain and review your electric car's  charging sessions, including dates, energy consumption, and costs.
 
 ## Installation
 
