@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Edit Charging Station
+{% endblock %}
+
+{% block content %}
+    <h2>Edit Charging Station</h2>
+
+    {% for message in get_flashed_messages() %}
+        <div class="flash-message">{{ message }}</div>
+    {% endfor %}
+
+    <form method="post" action="{{ url_for('edit_station', id=station.id) }}">
+        <label for="station_name">Station Name:</label>
+        <input type="text" id="station_name" name="station_name" required value="{{ station.station_name }}">
+
+        <label for="streetname1">Street Name 1:</label>
+        <input type="text" id="streetname1" name="streetname1" value="{{ station.streetname1 }}">
+
+        <label for="streetname2">Street Name 2:</label>
+        <input type="text" id="streetname2" name="streetname2" value="{{ station.streetname2 }}">
+
+        <label for="zip">ZIP Code:</label>
+        <input type="text" id="zip" name="zip" value="{{ station.zip }}">
+
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" value="{{ station.city }}">
+
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country" value="{{ station.country }}">
+
+        <label for="operator">Operator:</label>
+        <select id="operator" name="operator">
+            {% for operator in operators %}
+                <option value="{{ operator.id }}" {% if station.operator == operator.id %} selected {% endif %}>
+                    {{ operator.operator_name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Save Changes">
+    </form>
+{% endblock %}

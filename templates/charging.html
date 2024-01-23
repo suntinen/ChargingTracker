@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Charging Events
+{% endblock %}
+
+{% block content %}
+    <h2>Charging Events</h2>
+    <h3>Add New Charging Event</h3>
+    <form method="post" action="{{ url_for('add_charging') }}">
+
+        <label for="charging_station_id">Charging Station:</label>
+        <select id="charging_station" name="charging_station">
+            {% for station in user_charging_stations %}
+                <option value="{{ station.id }}">{{ station.station_name }}</option>
+            {% endfor %}
+        </select>
+        <label for="start_time">Start Time:</label>
+        <input type="datetime-local" id="start_time" name="start_time" required>
+
+        <label for="end_time">End Time:</label>
+        <input type="datetime-local" id="end_time" name="end_time" required>
+
+        <label for="charged_energy">Energy Charged (kWh):</label>
+        <input type="number" id="charged_energy" name="charged_energy" required>
+
+        <label for="cost">Cost (€):</label>
+        <input type="number" id="cost" name="cost" required>
+
+        <label for="vehicle">Car:</label>
+        <select id="vehicle" name="vehicle">
+            <option value="">Select car</option>
+            {% for vehicle in vehicles %}
+                <option value="{{ vehicle.id }}">
+                    {{ vehicle.vehicle_name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="mileage">Mileage:</label>
+        <input type="number" id="mileage" name="mileage" required>
+
+        <input type="submit" value="Add Charging Event">
+    </form>
+    <table>
+        <tr>
+            <th>Charging Station</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Energy Charged</th>
+            <th>Cost</th>
+            <th>Vehicle</th>
+            <th>Mileage</th>
+            <th>Actions</th>
+        </tr>
+        {% for charging in chargings %}
+            <tr>
+                <td>{{ charging.station_name }}</td>
+                <td>{{ charging.start_time }}</td>
+                <td>{{ charging.end_time }}</td>
+                <td>{{ charging.charged_energy }}</td>
+                <td>{{ charging.cost }}</td>
+                <td>{{ charging.car_name }}</td>
+                <td>{{ charging.mileage }}</td>
+                <td>
+                    <a href="{{ url_for('edit_charging', charging_id=charging.charging_id) }}">Edit</a>
+                    <form action="{{ url_for('delete_charging', charging_id=charging.charging_id) }}" method="post">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

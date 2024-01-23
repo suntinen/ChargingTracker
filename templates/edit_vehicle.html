@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Muokkaa Autoa
+{% endblock %}
+
+{% block content %}
+    <h2>Edit Car</h2>
+
+    {% for message in get_flashed_messages() %}
+        <div class="flash-message">{{ message }}</div>
+    {% endfor %}
+
+    {% if vehicle %}
+        <form method="post" action="/edit_vehicle/{{ vehicle.id }}">
+            <label for="vehicle_name">Name:</label>
+            <input type="text" id="vehicle_name" name="vehicle_name" value="{{ vehicle.vehicle_name }}" required>
+
+            <label for="battery_size">Battery size:</label>
+            <input type="number" id="battery_size" name="battery_size" value="{{ vehicle.battery_size }}" required>
+
+            <input type="submit" value="Update car">
+        </form>
+    {% else %}
+        <p>Vehicle not found.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <title>ChargingTracker - {% block title %}{% endblock %}</title>
+</head>
+<body>
+    <h1>ChargingTracker v2</h1>
+    <nav>
+        <a href="/">Home</a>
+        {% if session.username %}
+        <a href="/vehicles">My cars</a> 
+        <a href="/stations">Charging Stations</a>
+        <a href="/operators">Operators</a> 
+        <a href="/chargings">My Chargings</a> <!-- Uusi linkki lataustapahtumiin -->
+        <span>User id: {{ session.username }}</span>
+        <a href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% endif %}
+    </nav>
+    <hr>
+    {% block content %}
+    <!-- Sisältö sijoitetaan tähän -->
+    {% endblock %}
+    <footer>
+        <!-- Voit lisätä tänne alatunnisteen, jos haluat -->
+    </footer>
+</body>
+</html>

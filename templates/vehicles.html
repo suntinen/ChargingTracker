@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+My Cars
+{% endblock %}
+
+{% block content %}
+    <h2>My Cars</h2>
+
+    {% for message in get_flashed_messages() %}
+        <div class="flash-message">{{ message }}</div>
+    {% endfor %}
+
+    <h3>Add new car</h3>
+    <form method="post" action="/add_vehicle">
+        <label for="vehicle_name">Name:</label>
+        <input type="text" id="vehicle_name" name="vehicle_name" required>
+
+        <label for="battery_size">Battery size:</label>
+        <input type="number" id="battery_size" name="battery_size" required>
+
+        <input type="submit" value="Add car">
+    </form>
+
+    <h3>Your cars</h3>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Battery size</th>
+            <th>Actions</th>
+        </tr>
+        {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ vehicle.vehicle_name }}</td>
+                <td>{{ vehicle.battery_size }}</td>
+                <td>
+                    <a href="/edit_vehicle/{{ vehicle.id }}">Edit</a>
+                    <a href="/delete_vehicle/{{ vehicle.id }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

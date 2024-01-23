@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Charging Stations
+{% endblock %}
+
+{% block content %}
+    <h2>Charging Stations</h2>
+
+    {% for message in get_flashed_messages() %}
+        <div class="flash-message">{{ message }}</div>
+    {% endfor %}
+
+    <h3>Add New Charging Station</h3>
+    <form method="post" action="/stations">
+        <label for="station_name">Station Name:</label>
+        <input type="text" id="station_name" name="station_name" required value="{{ station_data.station_name|default('') }}">
+
+        <label for="streetname1">Street Name 1:</label>
+        <input type="text" id="streetname1" name="streetname1" value="{{ station_data.streetname1|default('') }}">
+
+        <label for="streetname2">Street Name 2:</label>
+        <input type="text" id="streetname2" name="streetname2" value="{{ station_data.streetname2|default('') }}">
+
+        <label for="zip">ZIP Code:</label>
+        <input type="text" id="zip" name="zip" value="{{ station_data.zip_code|default('') }}">
+
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" value="{{ station_data.city|default('') }}">
+
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country" value="{{ station_data.country|default('') }}">
+
+        <label for="operator">Operator:</label>
+        <select id="operator" name="operator">
+            <option value="">Select Operator</option>
+            {% for operator in operators %}
+                <option value="{{ operator.id }}" {% if station_data.operator_id|string == operator.id|string %} selected {% endif %}>
+                    {{ operator.operator_name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Add Station">
+    </form>
+
+    <h3>Existing Charging Stations</h3>
+    <table>
+        <tr>
+            <th>Station Name</th>
+            <th>Address</th>
+            <th>Operator</th>
+            <th>Actions</th>
+        </tr>
+        {% for station in stations %}
+            <tr>
+                <td>{{ station.station_name }}</td>
+                <td>{{ station.streetname1 }} {{ station.streetname2 }}, {{ station.zip }}, {{ station.city }}, {{ station.country }}</td>
+                <td>
+                    {% for operator in operators %}
+                        {% if operator.id == station.operator %}
+                            {{ operator.operator_name }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="/edit_station/{{ station.id }}">Edit</a>
+                    <a href="/delete_station/{{ station.id }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

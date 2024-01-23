@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Operators
+{% endblock %}
+
+{% block content %}
+    <h2>Operators</h2>
+
+    {% for message in get_flashed_messages() %}
+        <div class="flash-message">{{ message }}</div>
+    {% endfor %}
+
+    <h3>Add New Operator</h3>
+    <form method="post" action="/add_operator">
+        <label for="operator_name">Operator Name:</label>
+        <input type="text" id="operator_name" name="operator_name" required>
+
+        <input type="submit" value="Add Operator">
+    </form>
+
+    <h3>Existing Operators</h3>
+    <table>
+        <tr>
+            <th>Operator Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for operator in operators %}
+            <tr>
+                <td>{{ operator.operator_name }}</td>
+                <td>
+                    <!-- Link to the Edit Operator page -->
+                    <a href="/edit_operator/{{ operator.id }}">Edit</a>
+                    <!-- Link to delete the operator -->
+                    <a href="/delete_operator/{{ operator.id }}" onclick="return confirm('Are you sure you want to delete this operator?');">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
