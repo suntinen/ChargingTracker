@@ -1,34 +1,47 @@
 {% extends "layout.html" %}
-
 {% block title %}
 Edit Charging Event
 {% endblock %}
-
 {% block content %}
     <h2>Edit Charging Event</h2>
 
-    <form method="post">
-        <label for="charging_station">Charging Station:</label>
-        <input type="text" id="charging_station" name="charging_station" value="{{ charging.charging_station }}" required>
+    <form method="post" action="{{ url_for('edit_charging', charging_id=charging.charging_id) }}">
+
+        <label for="charging_station_id">Charging Station:</label>
+        <select id="charging_station_id" name="charging_station_id">
+            {% for station in charging_stations %}
+                <option value="{{ station.id }}" {% if station.id == charging.charging_station_id %} selected {% endif %}>
+                    {{ station.station_name }}
+                </option>
+            {% endfor %}
+        </select>
+        <label for="vehicle_id">Car:</label>
+        <select id="vehicle_id" name="vehicle_id">
+            {% for vehicle in vehicles %}
+                <option value="{{ vehicle.id }}" {% if vehicle.id == charging.vehicle_id %} selected {% endif %}>
+                    {{ vehicle.vehicle_name }}
+                </option>
+            {% endfor %}
+        </select>
+
 
         <label for="start_time">Start Time:</label>
-        <input type="datetime-local" id="start_time" name="start_time" value="{{ charging.start_time }}" required>
-
+        <input type="datetime-local" id="start_time" name="start_time" value="{{ charging.start_time_str|safe }}" required>
+        
         <label for="end_time">End Time:</label>
-        <input type="datetime-local" id="end_time" name="end_time" value="{{ charging.end_time }}" required>
+        <input type="datetime-local" id="end_time" name="end_time" value="{{ charging.end_time_str|safe }}" required>
 
-        <label for="charged_energy">Charged Energy:</label>
+        <label for="charged_energy">Charged Energy (kWh):</label>
         <input type="number" id="charged_energy" name="charged_energy" value="{{ charging.charged_energy }}" required>
 
-        <label for="cost">Cost:</label>
+        <label for="cost">Cost (€):</label>
         <input type="number" id="cost" name="cost" value="{{ charging.cost }}" required>
 
-        <label for="vehicle">Vehicle:</label>
-        <input type="number" id="vehicle" name="vehicle" value="{{ charging.vehicle }}" required>
+
 
         <label for="mileage">Mileage:</label>
         <input type="number" id="mileage" name="mileage" value="{{ charging.mileage }}" required>
 
-        <input type="submit" value="Update Charging Event">
+        <input type="submit" class="btn btn-primary" value="Update Charging Event">
     </form>
 {% endblock %}

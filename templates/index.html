@@ -2,15 +2,6 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <h1>Login</h1>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class="flash-messages">
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
 <h2>Track your EV chargings</h2>
 {% endblock %}
 

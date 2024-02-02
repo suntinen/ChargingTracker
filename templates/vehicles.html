@@ -1,17 +1,11 @@
 {% extends "layout.html" %}
 
 {% block title %}
-My Cars
+Käyttäjän Autot
 {% endblock %}
 
 {% block content %}
-    <h2>My Cars</h2>
-
-    {% for message in get_flashed_messages() %}
-        <div class="flash-message">{{ message }}</div>
-    {% endfor %}
-
-    <h3>Add new car</h3>
+    <h3>Add New car</h3>
     <form method="post" action="/add_vehicle">
         <label for="vehicle_name">Name:</label>
         <input type="text" id="vehicle_name" name="vehicle_name" required>
@@ -19,10 +13,10 @@ My Cars
         <label for="battery_size">Battery size:</label>
         <input type="number" id="battery_size" name="battery_size" required>
 
-        <input type="submit" value="Add car">
+        <input type="submit" class="btn btn-primary" value="Add car">
     </form>
 
-    <h3>Your cars</h3>
+    <h3>My Cars</h3>
     <table>
         <tr>
             <th>Name</th>
@@ -35,9 +29,14 @@ My Cars
                 <td>{{ vehicle.battery_size }}</td>
                 <td>
                     <a href="/edit_vehicle/{{ vehicle.id }}">Edit</a>
-                    <a href="/delete_vehicle/{{ vehicle.id }}">Delete</a>
+                    <a href="/delete_vehicle/{{ vehicle.id }}" onclick="return confirmDelete();">Delete</a>
                 </td>
             </tr>
         {% endfor %}
     </table>
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this car?');
+        }
+    </script>
 {% endblock %}

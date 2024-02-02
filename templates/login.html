@@ -4,15 +4,6 @@ Login Page
 <h2>Login</h2>
 {% block content %}
 <h1>Login</h1>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class="flash-messages">
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
 {% if session.username %}
 <p>User id: {{ session.username }}</p>
 <a href="/logout">Logout</a>
@@ -20,7 +11,7 @@ Login Page
 <form action="/login" method="POST">
 User id: <input type="text" name="username"> <br>
 Password: <input type="password" name="password"> <br>
-<input type="submit" value="Login">
+<input type="submit" class="btn btn-primary" value="Login">
 </form>
 {% endif %}
 {% endblock %}

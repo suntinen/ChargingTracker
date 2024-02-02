@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Muokkaa Autoa
+Edit Your Car
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@ Muokkaa Autoa
             <label for="battery_size">Battery size:</label>
             <input type="number" id="battery_size" name="battery_size" value="{{ vehicle.battery_size }}" required>
 
-            <input type="submit" value="Update car">
+            <input type="submit" class="btn btn-primary" value="Update car">
         </form>
     {% else %}
         <p>Vehicle not found.</p>

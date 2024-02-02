@@ -5,12 +5,6 @@ Charging Stations
 {% endblock %}
 
 {% block content %}
-    <h2>Charging Stations</h2>
-
-    {% for message in get_flashed_messages() %}
-        <div class="flash-message">{{ message }}</div>
-    {% endfor %}
-
     <h3>Add New Charging Station</h3>
     <form method="post" action="/stations">
         <label for="station_name">Station Name:</label>
@@ -41,7 +35,7 @@ Charging Stations
             {% endfor %}
         </select>
 
-        <input type="submit" value="Add Station">
+        <input type="submit" class="btn btn-primary" value="Add Station">
     </form>
 
     <h3>Existing Charging Stations</h3>
@@ -65,9 +59,15 @@ Charging Stations
                 </td>
                 <td>
                     <a href="/edit_station/{{ station.id }}">Edit</a>
-                    <a href="/delete_station/{{ station.id }}">Delete</a>
+                    <a href="/delete_station/{{ station.id }}" onclick="return confirmDelete();">Delete</a>
                 </td>
             </tr>
         {% endfor %}
     </table>
+    <script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this charging station?');
+    }
+    </script>
+        
 {% endblock %}
