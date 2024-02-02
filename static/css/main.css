@@ -1,0 +1,122 @@
+/* Perusasetukset */
+body {
+    margin: auto;
+    max-width: 45em;
+    font-family: 'Fira Sans', sans-serif;
+    background: rgb(248, 248, 255);
+    color: #333;
+}
+
+/* Otsikot */
+h1, h2, h3 {
+    margin-top: 0;
+}
+h1 {
+    font-size: 1.5em; 
+}
+h2 {
+    font-size: 1.25em;
+}
+h3 {
+    font-size: 1.15em; 
+}
+
+/* Navigointi */
+nav ul {
+    padding: 0;
+    margin: .5em;
+    text-align: center;
+}
+nav li {
+    display: inline-block;
+    padding: .7em 1em .5em;
+    background: #e8f0fe;
+    border-radius: .5em;
+    margin: .2em;
+    transition: background-color 0.3s;
+}
+nav li.active {
+    background: #b0c4de;
+}
+nav li:hover {
+    background-color: #007bff; 
+    color: white; 
+}
+nav li a {
+    text-decoration: none;
+    color: #0056b3; 
+}
+
+/* Painikkeet ja linkit */
+.btn-primary, .btn-block, form #button {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s;
+}
+.btn-primary:hover, form #button:hover {
+    background-color: #0056b3;
+    border-color: #0044a3;
+    color: white;
+}
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/* Lomakkeet */
+form {
+    margin: auto;
+    padding: .5em;
+    background: white; 
+    border-radius: .5em;
+    max-width: 30em;
+    margin-bottom: 2em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1); 
+}
+.form-group, .form-control, label, input[type="text"], input[type="password"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Yleiset alueet */
+.header {
+    background: #0056b3;
+    color: white;
+    font-weight: bold;
+    padding: 2em 1em;
+    font-size: 2em;
+    border-radius: .5em;
+    margin-top: .5em;
+}
+.content {
+    background: white;
+    padding: 1.5em 2em;
+    border-radius: .5em;
+}
+
+/* Ilmoitukset ja viestit */
+.flash-messages, .flash-messages li {
+    margin: 1em auto;
+    padding: 1em;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: .5em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    list-style: none;
+}
+.flash-messages li:not(:last-child) {
+    border-bottom: 1px solid #ddd;
+}
+
+/* Ikonit */
+.big-icon {
+    width: 4em;
+    height: 4em;
+    color: red; 
+}

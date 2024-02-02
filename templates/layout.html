@@ -4,13 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <title>{% block title %}Charging Tracker{% endblock %}</title>
 </head>
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-sm navbar-light">
-            <a class="navbar-brand" href="/">ChargingTracker<br>{{ session.username }}</a>
+            <a class="navbar-brand" href="/"><b>ChargingTracker</b><br>{{ session.username }}</a>
             <ul class="navbar-nav">
                 {% if not session.username %}
                 <ul class="navbar-nav">
@@ -20,26 +21,26 @@
                 {% endif %}
                 {% if session.username %}
                 <li class="nav-item {% if request.path == '/chargings' %}active{% endif %}">
-                    <a class="nav-link" href="/chargings"><i class="bi bi-lightning"></i></i>My&nbsp;Chargings</a>
+                    <a class="nav-link" href="/chargings"><i class="bi bi-lightning big-icon"></i></i>My&nbsp;Chargings</a>
                 </li>
                 <li class="nav-item {% if request.path == '/stations' %}active{% endif %}">
-                    <a class="nav-link" href="/stations"><i class="bi bi-ev-station"></i>Charging Stations</a>
+                    <a class="nav-link" href="/stations"><i class="bi bi-ev-station big-icon"></i>Charging Stations</a>
                 </li>
                 <li class="nav-item {% if request.path == '/vehicles' %}active{% endif %}">
-                    <a class="nav-link" href="/vehicles"><i class="bi bi-car-front"></i>My&nbsp;Cars</a>
+                    <a class="nav-link" href="/vehicles"><i class="bi bi-car-front big-icon"></i>My&nbsp;Cars</a>
                 </li>
                 <li class="nav-item {% if request.path == '/operators' %}active{% endif %}">
-                    <a class="nav-link" href="/operators"><i class="bi bi-people-fill"></i>Operators</a>
+                    <a class="nav-link" href="/operators"><i class="bi bi-people-fill big-icon"></i>Operators</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i>Logout</a>
+                    <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right big-icon"></i>Logout</a>
                 </li>
                 {% else %}
                 <li class="nav-item {% if request.path == '/login' %}active{% endif %}">
-                    <a class="nav-link" href="/login"><i class="bi bi-door-open-fill"></i>Login</a>
+                    <a class="nav-link" href="/login"><i class="bi bi-door-open-fill big-icon"></i>Login</a>
                 </li>
                 <li class="nav-item {% if request.path == '/register' %}active{% endif %}">
-                    <a class="nav-link" href="/register"><i class="bi bi-pencil-square"></i>Register</a>
+                    <a class="nav-link" href="/register"><i class="bi bi-pencil-square big-icon"></i>Register</a>
                 </li>
                 {% endif %}
             </ul>

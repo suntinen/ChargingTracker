@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Login{% endblock %}
 Login Page
+{% if session.username %}
+{% else %}
 <h2>Login</h2>
+{% endif %}
 {% block content %}
 <h1>Login</h1>
 {% if session.username %}
