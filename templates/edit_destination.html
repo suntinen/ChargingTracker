@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Edit Destination{% endblock %}
+{% block content %}
+<h2>Edit Destination</h2>
+{% if destination %}
+    <form method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Destination Name:</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ destination.destination_name }}" required>        </div>
+        <button type="submit" class="btn btn-primary">Update Destination</button>
+        <a href="/destinations" class="btn btn-secondary">Cancel</a>
+    </form>
+{% else %}
+    <p>Vehicle not found.</p>
+{% endif %}
+{% endblock %}
