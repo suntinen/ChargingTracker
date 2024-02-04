@@ -11,6 +11,9 @@ User feedback is communicated effectively via flash messages, enhancing user
 experience. The application's user interface is made intuitive and responsive 
 with the integration of Bootstrap, offering a seamless navigation experience
 across various devices and screen sizes.
+
+This is first version of the ChargingTracker application. 
+
 """
 
 
