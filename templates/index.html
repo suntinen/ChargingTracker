@@ -1,20 +1,69 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-{% if session.username %}
-<h2>Track your EV chargings</h2>
-<p>Welcome, {{ session.username }}!</p>
-<p>Click <a href="/chargings">here</a> to see your chargings.</p>
-<p>Click <a href="/vehicles">here</a> to see your vehicles.</p>
-<p>Click <a href="/charging_stations">here</a> to see your charging stations.</p>
-<p>Click <a href="/destinations">here</a> to see your destinations.</p>
-<p>Click <a href="/operators">here</a> to see your charging operators.</p>
-<p>Click <a href="/logout">here</a> to logout.</p>
-<p> You can start by adding first, charging operators and cars you use for loading. </p>
-<p> Destinations are used to group your charging events.</p>
-{% else %}
-<h1>Login</h1>
-<h2>Track your EV chargings</h2>
-{% endif %}
+<div class="py-5">
+    {% if session.username %}
+    <div class="text-center mb-4">
+        <h2>Track your EV chargings</h2>
+        <p>Welcome, {{ session.username }}!</p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-lightning-fill me-2"></i>My Chargings</h5>
+                    <p class="card-text">Click here to see your chargings.</p>
+                    <a href="/chargings" class="btn btn-primary">View Chargings</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-car-front me-2"></i>My Vehicles</h5>
+                    <p class="card-text">Click here to see your vehicles.</p>
+                    <a href="/vehicles" class="btn btn-primary">View Vehicles</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-geo-alt-fill me-2"></i>Destinations</h5>
+                    <p class="card-text">Click here to see your destinations.</p>
+                    <a href="/destinations" class="btn btn-primary">View Destinations</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-people-fill me-2"></i>Operators</h5>
+                    <p class="card-text">Click here to see your charging operators.</p>
+                    <a href="/operators" class="btn btn-primary">View Operators</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-people-fill me-2"></i>Charging Operators</h5>
+                    <p class="card-text">Click here to manage your charging operators.</p>
+                    <a href="/operators" class="btn btn-primary">Manage Operators</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a href="/logout" class="btn btn-secondary"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+    </div>
+    <p class="mt-4">You can start by adding first, charging operators and cars you use for loading. Destinations are used to group your charging events.</p>
+    {% else %}
+    <div class="text-center">
+        <h1>Login</h1>
+        <h2>Track your EV chargings</h2>
+        <a href="/login" class="btn btn-primary mt-3"><i class="bi bi-door-open-fill me-2"></i>Login</a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
-
