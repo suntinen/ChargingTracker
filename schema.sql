@@ -1,17 +1,5 @@
--- Käytä tätä tiedostoa luodaksesi tietokantaan tarvittavat taulut ja asetukset
-
--- Käytä chargingtrackerdb-tietokantaa
-\c chargingtrackerdb ctadmin
-
--- Poista vanha schema, jos se on olemassa
-DROP SCHEMA IF EXISTS public CASCADE;
-
--- Luo uusi schema
-CREATE SCHEMA public;
-
-ALTER USER ctadmin SET search_path TO public;
-
--- Määrittele taulut skeeman sisällä
+-- Purpose: Create the database schema for the application
+-- Create tables and sequences
 CREATE TABLE IF NOT EXISTS public.users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(80) NOT NULL,
@@ -60,17 +48,6 @@ CREATE TABLE IF NOT EXISTS public.charging (
     cost INTEGER,
     vehicle INTEGER REFERENCES public.vehicle(id),
     mileage INTEGER,
-    destination_id INTEGER REFERENCES public.destinations(id) -- Lisätty destination_id viiteavaimella
+    destination_id INTEGER REFERENCES public.destinations(id) 
 );
 
--- Aseta kaikkien taulujen ja sekvenssien omistajaksi ctadmin
-ALTER TABLE public.charging OWNER TO ctadmin;
-ALTER TABLE public.charging_station OWNER TO ctadmin;
-ALTER TABLE public.operators OWNER TO ctadmin;
-ALTER TABLE public.users OWNER TO ctadmin;
-ALTER TABLE public.vehicle OWNER TO ctadmin;
-ALTER TABLE public.destinations OWNER TO ctadmin;
-
--- Aseta oikeudet
-GRANT ALL ON TABLE public.charging, public.charging_station, public.operators, public.users, public.vehicle, public.destinations TO ctadmin;
-GRANT ALL ON SEQUENCE public.charging_id_seq, public.charging_station_id_seq, public.operators_id_seq, public.users_id_seq, public.vehicle_id_seq, public.destinations_id_seq TO ctadmin;
