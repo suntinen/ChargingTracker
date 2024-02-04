@@ -11,11 +11,12 @@ Welcome to the GitHub page of **ChargingTracker**! This web application provides
 - **Charging Records:** Track charging sessions with details like start/end times, cost, and energy charged.
 - **Destination Management:** Add and manage frequent charging destinations.
 
-## Next Steps
-- **Security: Review security requirements set in 
-- **Maintence: Add modularity and comments to coding
-- **UI/UX: Review user interface and make it more user-friendly and intuitive
-- **Testing: Find out and test for any bugs
+## Next Steps (as per course requirements)
+- **Security:** Review and add security requirements (SQL injection, XSS vulnerability, CSRF vulnerability) implementation set in course requirements
+- **Maintence:** Add modularity (i.e. routes and db modules) and comments to coding
+- **UI/UX:** Review user interface and make it more user-friendly and intuitive
+- **Testing:** Find out and test for any bugs
+- **Production Deployment:** Deploy application available in public internet (if time allows)
 
 ## Templates
 
