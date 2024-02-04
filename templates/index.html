@@ -3,6 +3,15 @@
 {% block content %}
 {% if session.username %}
 <h2>Track your EV chargings</h2>
+<p>Welcome, {{ session.username }}!</p>
+<p>Click <a href="/chargings">here</a> to see your chargings.</p>
+<p>Click <a href="/vehicles">here</a> to see your vehicles.</p>
+<p>Click <a href="/charging_stations">here</a> to see your charging stations.</p>
+<p>Click <a href="/destinations">here</a> to see your destinations.</p>
+<p>Click <a href="/operators">here</a> to see your charging operators.</p>
+<p>Click <a href="/logout">here</a> to logout.</p>
+<p> You can start by adding first, charging operators and cars you use for loading. </p>
+<p> Destinations are used to group your charging events.</p>
 {% else %}
 <h1>Login</h1>
 <h2>Track your EV chargings</h2>

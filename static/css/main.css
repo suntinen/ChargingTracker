@@ -36,16 +36,43 @@ nav li {
     transition: background-color 0.3s;
 }
 nav li.active {
-    background: #b0c4de;
+    background: #007bff; 
+
 }
 nav li:hover {
-    background-color: #007bff; 
-    color: white; 
+    background-color: #b0c4de;
 }
 nav li a {
     text-decoration: none;
-    color: #0056b3; 
+    color:white; /* Oletusväri valikkoteksteille */
 }
+
+
+nav li a:hover {
+    color: white; /* Väri kun hiiri on linkin päällä */
+}
+
+nav li.active a {
+    color: white; /* Väri aktiiviselle valikkolinkille */
+}
+
+/* Normaali tila */
+nav .navbar-nav .nav-link {
+    color: white; /* Oletusväri valikkolinkille */
+}
+
+/* Hover ja focus tila */
+nav .navbar-nav .nav-link:hover,
+nav .navbar-nav .nav-link:focus {
+    color: yellow; /* Väri kun hiiri on linkin päällä tai linkki on fokusoitu */
+}
+
+/* Aktiivinen tila */
+nav .navbar-nav .nav-item.active .nav-link {
+    color: white; /* Väri aktiiviselle valikkolinkille */
+}
+
+
 
 /* Buttons & Links */
 .btn-primary, .btn-block, form #button {
@@ -115,8 +142,43 @@ form {
 }
 
 /* Icons */
+/* Normaali tila */
 .big-icon {
-    width: 4em;
-    height: 4em;
-    color: red; 
+    color: darkgray; /* Oletusväri ikoneille */
+}
+
+/* Hover tila */
+nav .navbar-nav .nav-link:hover .big-icon,
+nav .navbar-nav .nav-link:focus .big-icon {
+    color: black; /* Väri kun hiiri on ikonin päällä tai ikoni on fokusoitu */
+}
+
+/* Aktiivinen tila */
+nav .navbar-nav .nav-item.active .nav-link .big-icon {
+    color: white; /* Väri aktiiviselle ikonille */
+}
+
+/*Table*/
+table {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+th, td {
+    font-size: 0.9em; /* Säädä tarpeen mukaan */
+}
+.btn {
+    border-radius: 0.25em; /* Pyöristetyt kulmat */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lisää varjo */
+}
+.btn-primary {
+    background-color: #0056b3; /* Oma päävärisi */
+}
+.btn-danger {
+    background-color: #d9534f; /* Oma vaaravärisi */
+}
+.form-control {
+    padding: 0.375rem 0.75rem; /* Säädä paddingia */
+    border: 1px solid #ced4da; /* Säädä reunaviivaa */
+    border-radius: 0.25rem; /* Säädä kulmien pyöristystä */
 }

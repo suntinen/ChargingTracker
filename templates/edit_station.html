@@ -1,12 +1,10 @@
 {% extends "layout.html" %}
-
 {% block title %}
 Edit Charging Station
+<!-- Edit template for charging stations -->
 {% endblock %}
-
 {% block content %}
     <h2>Edit Charging Station</h2>
-
     {% for message in get_flashed_messages() %}
         <div class="flash-message">{{ message }}</div>
     {% endfor %}

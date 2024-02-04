@@ -2,31 +2,45 @@
 
 {% block title %}
 Charging Stations
+<!-- Template for charging stations -->
 {% endblock %}
 
 {% block content %}
-    <h3>Add New Charging Station</h3>
-    <form method="post" action="/stations">
+<h3>Add New Charging Station</h3>
+<form method="post" action="/stations">
+    <div class="form-group">
         <label for="station_name">Station Name:</label>
-        <input type="text" id="station_name" name="station_name" required value="{{ station_data.station_name|default('') }}">
+        <input type="text" class="form-control" id="station_name" name="station_name" required value="{{ station_data.station_name|default('') }}">
+    </div>
 
+    <div class="form-group">
         <label for="streetname1">Street Name 1:</label>
-        <input type="text" id="streetname1" name="streetname1" value="{{ station_data.streetname1|default('') }}">
+        <input type="text" class="form-control" id="streetname1" name="streetname1" value="{{ station_data.streetname1|default('') }}">
+    </div>
 
+    <div class="form-group">
         <label for="streetname2">Street Name 2:</label>
-        <input type="text" id="streetname2" name="streetname2" value="{{ station_data.streetname2|default('') }}">
+        <input type="text" class="form-control" id="streetname2" name="streetname2" value="{{ station_data.streetname2|default('') }}">
+    </div>
 
+    <div class="form-group">
         <label for="zip">ZIP Code:</label>
-        <input type="text" id="zip" name="zip" value="{{ station_data.zip_code|default('') }}">
+        <input type="text" class="form-control" id="zip" name="zip" value="{{ station_data.zip_code|default('') }}">
+    </div>
 
+    <div class="form-group">
         <label for="city">City:</label>
-        <input type="text" id="city" name="city" value="{{ station_data.city|default('') }}">
+        <input type="text" class="form-control" id="city" name="city" value="{{ station_data.city|default('') }}">
+    </div>
 
+    <div class="form-group">
         <label for="country">Country:</label>
-        <input type="text" id="country" name="country" value="{{ station_data.country|default('') }}">
+        <input type="text" class="form-control" id="country" name="country" value="{{ station_data.country|default('') }}">
+    </div>
 
+    <div class="form-group">
         <label for="operator">Operator:</label>
-        <select id="operator" name="operator">
+        <select class="form-control" id="operator" name="operator">
             <option value="">Select Operator</option>
             {% for operator in operators %}
                 <option value="{{ operator.id }}" {% if station_data.operator_id|string == operator.id|string %} selected {% endif %}>
@@ -34,40 +48,39 @@ Charging Stations
                 </option>
             {% endfor %}
         </select>
+    </div>
 
-        <input type="submit" class="btn btn-primary" value="Add Station">
-    </form>
+    <input type="submit" class="btn btn-primary" value="Add Station">
+</form>
 
-    <h3>Existing Charging Stations</h3>
-    <table>
+<h3>Existing Charging Stations</h3>
+<table class="table table-striped table-hover">
+    <thead>
         <tr>
             <th>Station Name</th>
             <th>Address</th>
             <th>Operator</th>
             <th>Actions</th>
         </tr>
+    </thead>
+    <tbody>
         {% for station in stations %}
-            <tr>
-                <td>{{ station.station_name }}</td>
-                <td>{{ station.streetname1 }} {{ station.streetname2 }}, {{ station.zip }}, {{ station.city }}, {{ station.country }}</td>
-                <td>
-                    {% for operator in operators %}
-                        {% if operator.id == station.operator %}
-                            {{ operator.operator_name }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    <a href="/edit_station/{{ station.id }}">Edit</a>
-                    <a href="/delete_station/{{ station.id }}" onclick="return confirmDelete();">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>{{ station.station_name }}</td>
+            <td>{{ station.streetname1 }} {{ station.streetname2 }}, {{ station.zip }}, {{ station.city }}, {{ station.country }}</td>
+            <td>{{ station.operator_name }}</td>
+            <td>
+                <a href="/edit_station/{{ station.id }}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="/delete_station/{{ station.id }}" class="btn btn-sm btn-danger" onclick="return confirmDelete();">Delete</a>
+            </td>
+        </tr>
         {% endfor %}
-    </table>
-    <script>
-    function confirmDelete() {
-        return confirm('Are you sure you want to delete this charging station?');
-    }
-    </script>
-        
+    </tbody>
+</table>
+<script>
+function confirmDelete() {
+    return confirm('Are you sure you want to delete this charging station?');
+}
+</script>
+    
 {% endblock %}

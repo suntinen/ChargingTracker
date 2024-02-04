@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}
 Charging Events
+<!-- This template is used as main page of user functionality to save charging events -->
 {% endblock %}
 {% block content %}
     <h3>Add New Charging Event</h3>
@@ -47,8 +48,22 @@ Charging Events
         <input type="submit" class="btn btn-primary" value="Add Charging Event">
     </form>
 
-    <h3>Charging Events</h3>
-    <table>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="mb-0">Charging Events</h3>
+        <select id="destinationFilter" onchange="filterByDestination()" class="form-control w-auto" style="background-color: white;">
+            <option value="">Filter Destination</option>
+            {% for destination in destinations %}
+                <option value="{{ destination.id }}" {% if destination.id|string == selected_destination_id %}selected{% endif %}>
+                    {{ destination.destination_name }}
+                </option>
+            {% endfor %}
+        </select>
+        
+    </div>
+    
+
+<table class="table table-striped table-hover">
+    <thead>
         <tr>
             <th>Charging Station</th>
             <th>Start Time</th>
@@ -60,24 +75,36 @@ Charging Events
             <th>Destination</th>
             <th>Actions</th>
         </tr>
-        {% for charging in chargings %}
-        <tr>
-            <td>{{ charging.station_name }}</td>
-            <td>{{ charging.start_time }}</td>
-            <td>{{ charging.end_time }}</td>
-            <td>{{ charging.charged_energy }}</td>
-            <td>{{ charging.cost }}</td>
-            <td>{{ charging.vehicle_name }}</td>
-            <td>{{ charging.mileage }}</td>
-            <td>{{ charging.destination_name or 'N/A' }}</td>
+    </thead>
+    <tbody>
+    {% for charging in chargings %}
+    <tr>
+        <td>{{ charging.station_name }}</td>
+        <td>{{ charging.start_time }}</td>
+        <td>{{ charging.end_time }}</td>
+        <td>{{ charging.charged_energy }}</td>
+        <td>{{ charging.cost }}</td>
+        <td>{{ charging.vehicle_name }}</td>
+        <td>{{ charging.mileage }}</td>
+        <td>{{ charging.destination_name or 'N/A' }}</td>
 
-            <td>
-                <a href="{{ url_for('edit_charging', id=charging.id) }}">Edit</a>
-                <form style="display:inline" method="post" action="{{ url_for('delete_charging', id=charging.id) }}" onsubmit="return confirm('Are you sure?');">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+        <td>
+            <a href="{{ url_for('edit_charging', id=charging.id) }}" class="btn btn-sm btn-primary mr-2">Edit</a>
+            <a href="/delete_charging/{{ charging.id }}" class="btn btn-sm btn-danger" onclick="return confirmDelete();">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+    // Destination filter is used to filter charging events by destination in the table 
+    function filterByDestination() {
+        var destinationId = document.getElementById('destinationFilter').value;
+        window.location.href = '/chargings?destinationFilter=' + destinationId;
+    }
+    // Confrim delete function is used to confirm the user's action to delete the charging event
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this charging event?');
+    }
+</script>      
 {% endblock %}

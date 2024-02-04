@@ -1,42 +1,47 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Käyttäjän Autot
+My cars
+<!-- Templare for Cars -->
 {% endblock %}
 
 {% block content %}
-    <h3>Add New car</h3>
-    <form method="post" action="/add_vehicle">
-        <label for="vehicle_name">Name:</label>
-        <input type="text" id="vehicle_name" name="vehicle_name" required>
+<h3>Add New car</h3>
+<form method="post" action="/add_vehicle">
+    <label for="vehicle_name">Name:</label>
+    <input type="text" id="vehicle_name" name="vehicle_name" required>
 
-        <label for="battery_size">Battery size:</label>
-        <input type="number" id="battery_size" name="battery_size" required>
+    <label for="battery_size">Battery size:</label>
+    <input type="number" id="battery_size" name="battery_size" required>
 
-        <input type="submit" class="btn btn-primary" value="Add car">
-    </form>
+    <input type="submit" class="btn btn-primary" value="Add car">
+</form>
 
-    <h3>My Cars</h3>
-    <table>
+<h3>My Cars</h3>
+<table class="table table-striped table-hover">
+    <thead>
         <tr>
             <th>Name</th>
             <th>Battery size</th>
             <th>Actions</th>
         </tr>
+    </thead>
+    <tbody>
         {% for vehicle in vehicles %}
-            <tr>
-                <td>{{ vehicle.vehicle_name }}</td>
-                <td>{{ vehicle.battery_size }}</td>
-                <td>
-                    <a href="/edit_vehicle/{{ vehicle.id }}">Edit</a>
-                    <a href="/delete_vehicle/{{ vehicle.id }}" onclick="return confirmDelete();">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>{{ vehicle.vehicle_name }}</td>
+            <td>{{ vehicle.battery_size }}</td>
+            <td>
+                <a href="/edit_vehicle/{{ vehicle.id }}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="/delete_vehicle/{{ vehicle.id }}" class="btn btn-sm btn-danger" onclick="return confirmDelete();">Delete</a>
+            </td>
+        </tr>
         {% endfor %}
-    </table>
-    <script>
-        function confirmDelete() {
-            return confirm('Are you sure you want to delete this car?');
-        }
-    </script>
+    </tbody>
+</table>
+<script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this car?');
+    }
+</script>
 {% endblock %}

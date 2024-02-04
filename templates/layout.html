@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <title>{% block title %}Charging Tracker{% endblock %}</title>
@@ -24,7 +24,7 @@
                     <a class="nav-link" href="/chargings"><i class="bi bi-lightning big-icon"></i></i>My&nbsp;Chargings</a>
                 </li>
                 <li class="nav-item {% if request.path == '/destinations' %}active{% endif %}">
-                    <a class="nav-link" href="/destinations">Destinations</a>
+                    <a class="nav-link" href="/destinations"><i class="bi bi-geo-alt big-icon"></i>Destinations</a>
                 </li>
                 <li class="nav-item {% if request.path == '/stations' %}active{% endif %}">
                     <a class="nav-link" href="/stations"><i class="bi bi-ev-station big-icon"></i>Charging Stations</a>
@@ -32,9 +32,14 @@
                 <li class="nav-item {% if request.path == '/vehicles' %}active{% endif %}">
                     <a class="nav-link" href="/vehicles"><i class="bi bi-car-front big-icon"></i>My&nbsp;Cars</a>
                 </li>
+
+               
                 <li class="nav-item {% if request.path == '/operators' %}active{% endif %}">
                     <a class="nav-link" href="/operators"><i class="bi bi-people-fill big-icon"></i>Operators</a>
                 </li>
+              
+
+
                 <li class="nav-item">
                     <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right big-icon"></i>Logout</a>
                 </li>
