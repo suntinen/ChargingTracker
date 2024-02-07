@@ -4,6 +4,7 @@
 <h2>Destinations</h2>
 <!-- Adding new destinations -->
 <form method="post" action="/add_destination" class="mb-3">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
         <label for="name">Destination Name:</label>
         <input type="text" id="name" name="name" required class="form-control">

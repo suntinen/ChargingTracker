@@ -515,6 +515,7 @@ def edit_charging(id):
         cost = request.form['cost']
         mileage = request.form['mileage']
         destination_id = request.form['destination_id']
+        destination_id = None if destination_id == '' else destination_id
 
         # Update the charging event in the database
         sql = '''
