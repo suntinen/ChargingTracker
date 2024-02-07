@@ -8,6 +8,7 @@ Charging Stations
 {% block content %}
 <h3>Add New Charging Station</h3>
 <form method="post" action="/stations">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
         <label for="station_name">Station Name:</label>
         <input type="text" class="form-control" id="station_name" name="station_name" required value="{{ station_data.station_name|default('') }}">

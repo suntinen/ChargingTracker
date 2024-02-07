@@ -12,28 +12,30 @@ experience. The application's user interface is made intuitive and responsive
 with the integration of Bootstrap, offering a seamless navigation experience
 across various devices and screen sizes.
 
-This is first version of the ChargingTracker application. 
+This is the newest version of the ChargingTracker application. 
 
 """
 
-
-
-
-from flask import Flask, redirect, render_template, request, session, flash, get_flashed_messages, url_for
+import os
+from datetime import datetime
+from flask import (Flask, redirect, render_template, request, session, \
+                   flash, get_flashed_messages, url_for)
+from flask_wtf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+
 from dotenv import load_dotenv
-import os
+
 
 load_dotenv()  # Load environment variables from .env file
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///chargingtrackerdb"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 db = SQLAlchemy(app)
+csrf = CSRFProtect(app)
 
 
 @app.route('/')
@@ -62,7 +64,8 @@ def login():
             flash('User id or password were incorrect.', 'error')
 
     return render_template('login.html', messages=get_flashed_messages())
-   
+
+# Logout
 @app.route('/logout')
 def logout():
     if 'username' in session:
@@ -100,6 +103,7 @@ def register():
 
     return render_template('register.html')
 
+# Vehicles
 @app.route('/vehicles')
 def vehicles():
     print("Vehicles-reitti")
@@ -119,6 +123,7 @@ def vehicles():
     else:
         return redirect(url_for('login'))
 
+# Add vehicle
 @app.route('/add_vehicle', methods=['POST'])
 def add_vehicle():
     if 'username' not in session:
@@ -143,7 +148,8 @@ def add_vehicle():
         return redirect(url_for('vehicles'))
     else:
         return redirect(url_for('login'))
-
+    
+# Edit vehicle
 @app.route('/edit_vehicle/<int:id>', methods=['GET', 'POST'])
 def edit_vehicle(id):
     if 'username' not in session:
@@ -170,6 +176,7 @@ def edit_vehicle(id):
 
     return render_template('edit_vehicle.html', vehicle=vehicle)
 
+# Delete vehicle
 @app.route('/delete_vehicle/<int:id>')
 def delete_vehicle(id):
     if 'username' not in session:
@@ -193,6 +200,7 @@ def delete_vehicle(id):
     flash('Car successfully deleted from the database.')
     return redirect(url_for('vehicles'))
 
+# Charging stations
 @app.route('/stations', methods=['GET', 'POST'])
 def stations():
     if 'username' not in session:
@@ -203,6 +211,7 @@ def stations():
     result = db.session.execute(text(sql), {'user_id': user_id})
     user_operators = result.fetchall()
 
+    # Add a new charging station to the database
     if request.method == 'POST':
         station_data = {
             'station_name': request.form['station_name'],
@@ -227,7 +236,7 @@ def stations():
         flash('Charging station added successfully!')
         return redirect(url_for('stations'))
 
-
+    # Fetch all charging stations from the database
     sql_select = '''
         SELECT cs.id, cs.station_name, cs.streetname1, cs.streetname2, cs.zip, cs.city, cs.country, o.operator_name
         FROM charging_station cs
@@ -236,13 +245,11 @@ def stations():
     '''
     all_stations = db.session.execute(text(sql_select), {'user_id': user_id}).fetchall()
 
-
-
-    #sql_select = 'SELECT * FROM charging_station WHERE user_id = :user_id;'
-    #all_stations = db.session.execute(text(sql_select), {'user_id': user_id}).fetchall()
+    # Render the station template with the charging station data
     return render_template('station.html', stations=all_stations, operators=user_operators, station_data={})
 
 @app.route('/edit_station/<int:id>', methods=['GET', 'POST'])
+#Edit charging station"
 def edit_station(id):
     if request.method == 'POST':
         # Update the charging station
@@ -273,6 +280,7 @@ def edit_station(id):
     return render_template('edit_station.html', station=station, operators=operators)
 
 @app.route('/delete_station/<int:id>', methods=['GET', 'POST'])
+# Delete charging station
 def delete_station(id):
     # First, retrieve the station name for the flash message
     station_sql = 'SELECT station_name FROM charging_station WHERE id = :id;'
@@ -304,6 +312,7 @@ def delete_station(id):
     return redirect(url_for('stations'))
 
 @app.route('/operators')
+# Operators
 def operators():
     # Check if the user is logged in
     if 'username' not in session:
@@ -361,6 +370,7 @@ def edit_operator(id):
         db.session.execute(text(sql), {'operator_name': operator_name, 'id': id})
         db.session.commit()
 
+        # Flash a message and redirect
         flash('Operator succesfully updated.')
         return redirect(url_for('operators'))
 
@@ -378,6 +388,7 @@ def delete_operator(id):
     result = db.session.execute(text(sql), {'id': id, 'user_id': user_id})
     operator = result.fetchone()
 
+    # If the operator is not found, flash a message and redirect
     if not operator:
         flash('Operator not found or you are not authorized to delete this operator', 'error')
         return redirect(url_for('operators'))
@@ -387,6 +398,7 @@ def delete_operator(id):
     check_result = db.session.execute(text(check_sql), {'operator_id': id})
     count = check_result.fetchone()[0]
 
+    # If the operator is referenced, flash a message and redirect
     if count > 0:
         flash('Cannot delete operator as it is referenced in other records.', 'error')
         return redirect(url_for('operators'))
@@ -400,6 +412,7 @@ def delete_operator(id):
     return redirect(url_for('operators'))
 
 @app.route('/chargings')
+# Charging events
 def chargings():
     # Check if the user is logged in
     if 'username' not in session:
@@ -408,12 +421,15 @@ def chargings():
     user_id = session['user_id']
     selected_destination_id = str(request.args.get('destinationFilter', ''))  
 
+    # Fetch the vehicles, charging stations and destinations from the database
     vehicles_sql = 'SELECT id, vehicle_name FROM vehicle WHERE user_id = :user_id;'
     vehicles = db.session.execute(text(vehicles_sql), {'user_id': user_id}).fetchall()
 
+    # Fetch the charging stations and destinations from the database
     stations_sql = 'SELECT id, station_name FROM charging_station WHERE user_id = :user_id;'
     charging_stations = db.session.execute(text(stations_sql), {'user_id': user_id}).fetchall()
 
+    # Fetch the destinations from the database
     destinations_sql = 'SELECT id, destination_name FROM destinations WHERE user_id = :user_id;'
     destinations = db.session.execute(text(destinations_sql), {'user_id': user_id}).fetchall()
 
@@ -427,6 +443,7 @@ def chargings():
     WHERE c.user_id = :user_id
     '''
 
+    # Define the SQL parameters
     sql_params = {'user_id': user_id}
 
     # Add the destination filter to the SQL query if a destination is selected
@@ -439,12 +456,14 @@ def chargings():
     return render_template('charging.html', vehicles=vehicles, charging_stations=charging_stations, destinations=destinations, chargings=chargings, selected_destination_id=selected_destination_id)
 
 @app.route('/add_charging', methods=['POST'])
+# Add charging event
 def add_charging():
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    # Ota lomakkeen tiedot
+    # Get the user id from the session
     user_id = session['user_id']
+    # Get the form data
     charging_station_id = request.form.get('charging_station')
     vehicle_id = request.form.get('vehicle')
     start_time = request.form['start_time']
@@ -454,11 +473,13 @@ def add_charging():
     mileage = request.form['mileage']
     destination_id = request.form.get('destination') or None  # Muutettu: aseta None, jos destination_id on tyhjä
 
-    # Lisää charging event tietokantaan
+    # Add the charging event to the database
     sql = '''
     INSERT INTO charging (user_id, charging_station_id, vehicle, start_time, end_time, charged_energy, cost, mileage, destination_id) 
     VALUES (:user_id, :charging_station_id, :vehicle_id, :start_time, :end_time, :charged_energy, :cost, :mileage, :destination_id);
     '''
+
+    # Execute the SQL query
     db.session.execute(text(sql), {
         'user_id': user_id,
         'charging_station_id': charging_station_id,
@@ -472,14 +493,17 @@ def add_charging():
     })
     db.session.commit()
 
+    # Flash a message and redirect
     flash('Charging event added successfully!')
     return redirect(url_for('chargings'))
 
+# Edit charging event
 @app.route('/edit_charging/<int:id>', methods=['GET', 'POST'])
 def edit_charging(id):
     if 'username' not in session:
         return redirect(url_for('login'))
 
+    # Get the user id from the session
     user_id = session['user_id']
 
     if request.method == 'POST':
@@ -514,6 +538,7 @@ def edit_charging(id):
         })
         db.session.commit()
 
+        # Flash a message and redirect
         flash('Charging event updated successfully!')
         return redirect(url_for('chargings'))
     else:
@@ -521,19 +546,23 @@ def edit_charging(id):
         charging_info_sql = 'SELECT * FROM charging WHERE id = :id AND user_id = :user_id;'
         charging_info_result = db.session.execute(text(charging_info_sql), {'id': id, 'user_id': user_id}).fetchone()
 
+        # If the charging event is not found, flash a message and redirect
         if not charging_info_result:
             flash('Charging event not found.', 'error')
             return redirect(url_for('chargings'))
 
+        # Convert the charging event data to a dictionary
         charging_info = charging_info_result._asdict()
 
         # Load the vehicle, charging station and destination data from the database
         charging_stations_sql = 'SELECT id, station_name FROM charging_station WHERE user_id = :user_id;'
         charging_stations = db.session.execute(text(charging_stations_sql), {'user_id': user_id}).fetchall()
 
+        #  Fetch the vehicles from the database
         vehicles_sql = 'SELECT id, vehicle_name FROM vehicle WHERE user_id = :user_id;'
         vehicles = db.session.execute(text(vehicles_sql), {'user_id': user_id}).fetchall()
 
+        # Fetch the destinations from the database
         destinations_sql = 'SELECT id, destination_name FROM destinations WHERE user_id = :user_id;'
         destinations = db.session.execute(text(destinations_sql), {'user_id': user_id}).fetchall()
 
@@ -541,22 +570,26 @@ def edit_charging(id):
         charging_info['start_time_str'] = charging_info['start_time'].strftime('%Y-%m-%dT%H:%M')
         charging_info['end_time_str'] = charging_info['end_time'].strftime('%Y-%m-%dT%H:%M')
 
+        # Render the edit_charging template with the charging event data
         return render_template('edit_charging.html', charging=charging_info, vehicles=vehicles, charging_stations=charging_stations, destinations=destinations)
 
 
 @app.route('/delete_charging/<int:id>', methods=['POST'])
+# Delete charging event
 def delete_charging(id):
+    # Check if the user is logged in
     if 'username' not in session:
         flash('You must be logged in to perform this action.', 'warning')
         return redirect(url_for('login'))
 
-    # Tarkista, että lataustapahtuma kuuluu kirjautuneelle käyttäjälle
+    # Check if the charging event exists and if the user is authorized to delete it
     sql = 'SELECT * FROM charging WHERE id = :id AND user_id = :user_id;'
     result = db.session.execute(text(sql), {'id': id, 'user_id': session['user_id']})
     charging = result.fetchone()
 
+    # If the charging event is found, proceed to delete
     if charging:
-        # Poista lataustapahtuma
+        # Delete charging event from the database
         delete_sql = 'DELETE FROM charging WHERE id = :id;'
         db.session.execute(text(delete_sql), {'id': id})
         db.session.commit()
@@ -568,6 +601,7 @@ def delete_charging(id):
 
 
 @app.route('/destinations', methods=['GET', 'POST'])
+# Destinations
 def destinations():
     # Check if the user is logged in
     if 'username' not in session:
@@ -582,11 +616,13 @@ def destinations():
         db.session.commit()
         flash('Destination added successfully!')
 
+    # Fetch the destinations from the database
     sql = text('SELECT * FROM destinations WHERE user_id = :user_id')
     destinations = db.session.execute(sql, {'user_id': session['user_id']}).fetchall()
     return render_template('destinations.html', destinations=destinations)
 
 @app.route('/add_destination', methods=['POST'])
+# Add destination
 def add_destination():
     # Check if the user is logged in
     if 'username' not in session:
@@ -594,9 +630,11 @@ def add_destination():
 
     destination_name = request.form['name']
     user_id = session['user_id']
+    # Add the destination to the database
     sql = text('INSERT INTO destinations (destination_name, user_id) VALUES (:destination_name, :user_id)')
     db.session.execute(sql, {'destination_name': destination_name, 'user_id': user_id})
     db.session.commit()
+    # Flash a message and redirect
     flash('Destination added successfully!')
     return redirect('/destinations')
 
@@ -607,6 +645,7 @@ def edit_destination(id):
     if 'username' not in session:
         return redirect(url_for('login'))
 
+    # Update the destination in the database
     if request.method == 'POST':
         destination_name = request.form['name']
         sql = text('UPDATE destinations SET destination_name = :destination_name WHERE id = :id')
@@ -624,14 +663,13 @@ def edit_destination(id):
     if destination:
         return render_template('edit_destination.html', destination=destination)
     else:
-
         flash('Destination not found.', 'error')
         return redirect('/destinations')
 
 
 @app.route('/delete_destination/<int:id>', methods=['GET', 'POST'])
+# Delete destination
 def delete_destination(id):
-
     # Check if the user is logged in
     if 'username' not in session:
         return redirect(url_for('login'))
@@ -640,6 +678,7 @@ def delete_destination(id):
     sql = 'SELECT COUNT(*) FROM charging WHERE destination_id = :destination_id;'
     result = db.session.execute(text(sql), {'destination_id': id})
     count = result.fetchone()[0]
+    # If the destination is referenced in charging, flash a message and redirect
     if count > 0:
         flash('Cannot delete destination as it is referenced in other records.', 'error')
         return redirect(url_for('destinations'))
@@ -649,8 +688,10 @@ def delete_destination(id):
     db.session.execute(text(sql), {'id': id})
     db.session.commit()
 
+    # Flash a message and redirect
     flash('Destination successfully deleted from the database.')
     return redirect(url_for('destinations'))
 
 if __name__ == '__main__':
+    # Start the Flask application
     app.run(debug=True)

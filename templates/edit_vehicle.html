@@ -14,6 +14,7 @@ Edit My Cars
 
     {% if vehicle %}
         <form method="post" action="/edit_vehicle/{{ vehicle.id }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label for="vehicle_name">Name:</label>
             <input type="text" id="vehicle_name" name="vehicle_name" value="{{ vehicle.vehicle_name }}" required>
 

@@ -9,6 +9,7 @@ Operators
 
 <h3>Add New Operator</h3>
 <form method="post" action="/add_operator">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
         <label for="operator_name">Operator Name:</label>
         <input type="text" class="form-control" id="operator_name" name="operator_name" required>

@@ -6,6 +6,7 @@ Edit Charging Event
 {% block content %}
     <h2>Edit Charging Event</h2>
     <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="charging_station_id">Charging Station:</label>
         <select id="charging_station_id" name="charging_station_id">
             {% for station in charging_stations %}

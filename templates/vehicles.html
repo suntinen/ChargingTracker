@@ -8,6 +8,7 @@ My cars
 {% block content %}
 <h3>Add New car</h3>
 <form method="post" action="/add_vehicle">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label for="vehicle_name">Name:</label>
     <input type="text" id="vehicle_name" name="vehicle_name" required>
 

@@ -11,11 +11,12 @@ Login Page
 <p>User id: {{ session.username }}</p>
 <a href="/logout">Logout</a>
 {% else %}
+
 <form action="/login" method="POST">
-User id: <input type="text" name="username"> <br>
-Password: <input type="password" name="password"> <br>
-<input type="submit" class="btn btn-primary" value="Login">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    User id: <input type="text" name="username"> <br>
+    Password: <input type="password" name="password"> <br>
+    <input type="submit" class="btn btn-primary" value="Login">
 </form>
 {% endif %}
 {% endblock %}
-

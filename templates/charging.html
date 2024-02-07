@@ -8,6 +8,7 @@ Charging Events
     <!-- Charging events page -->
 
     <form method="post" action="{{ url_for('add_charging') }}" class="row g-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="col-md-6">
             <label for="charging_station" class="form-label">Charging Station:</label>
             <select id="charging_station" name="charging_station" class="form-select">
