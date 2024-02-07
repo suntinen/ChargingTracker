@@ -1,2 +1,11 @@
 # Ignore virtual environment
 venv/
+
+# Ignore help files
+schema2.sql
+schema3.sql
+.pylintrc
+
+# Ignore .DS_Store files
+.DS_Store
+
